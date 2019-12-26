@@ -1,6 +1,7 @@
 package dz.trash.model;
 
 import javax.xml.crypto.Data;
+import java.util.Objects;
 
 public class Admin extends User {
     private  String email ;
@@ -32,6 +33,19 @@ public class Admin extends User {
         this.email = email;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Admin)) return false;
+        Admin admin = (Admin) o;
+        return Objects.equals(getEmail(), admin.getEmail());
+    }
 
-    //les fonction deleteclient()  et   disabledchallenge()
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(getEmail());
+    }
+
+//les fonction deleteclient()  et   disabledchallenge()
 }

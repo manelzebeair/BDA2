@@ -1,6 +1,7 @@
 package dz.trash.model;
 
 import java.util.Date;
+import java.util.Objects;
 
 public class Photo {
     private int id_photo ;
@@ -11,6 +12,9 @@ public class Photo {
         this.id_photo = id_photo;
         this.path = path;
         this.creation_date = creation_date;
+    }
+
+    public Photo() {
     }
 
     public int getId_photo() {
@@ -35,5 +39,21 @@ public class Photo {
 
     public void setCreation_date(Date creation_date) {
         this.creation_date = creation_date;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Photo)) return false;
+        Photo photo = (Photo) o;
+        return getId_photo() == photo.getId_photo() &&
+                Objects.equals(getPath(), photo.getPath()) &&
+                Objects.equals(getCreation_date(), photo.getCreation_date());
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(getId_photo(), getPath(), getCreation_date());
     }
 }

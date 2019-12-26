@@ -2,21 +2,22 @@ package dz.trash.model;
 
 import javax.xml.crypto.Data;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 public class Client extends User {
     private String phone_number ;
     private String android_version ;
-    private Set<Challenge> cc;
+    private Set<Challenge> challenge;
     private Set<Note> note;
-    private Set<Comment> comment;
+    //private Set<Comment> comment;
 
 
     public Client() {
         super();
-        cc= new HashSet<Challenge>();
+        challenge= new HashSet<Challenge>();
         note = new HashSet<Note>();
-        comment = new HashSet<Comment>();
+        //comment = new HashSet<Comment>();
 
     }
 
@@ -24,32 +25,40 @@ public class Client extends User {
         super(id_user, last_name, first_name, user_name, password, birthdate);
         this.phone_number = phone_number;
         this.android_version = android_version;
-        cc= new HashSet<Challenge>();
+        challenge= new HashSet<Challenge>();
         note = new HashSet<Note>();
-       comment = new HashSet<Comment>();
+       //comment = new HashSet<Comment>();
 
     }
 
 
-    //association (owner) one to many unidirectionnelle entre challenge et client
+    //association (owner) one to many BIDidirectionnelle entre challenge et client ?????????????????????????
 
-    public void addChallenge(Challenge c){
-        if( !getChallenge().contains(c) ) getChallenge().add(c); }
+    public void addChallenge(Challenge c) {
+        //if( !getChallenge().contains(c) ) getChallenge().add(c);    //unidirectionnel
+        if (!getChallenge().contains(c)) {       //bidirectionnele
+            if (c.getOwner() != null) c.removeOwner();
+            c.setOwner(this);
+            getChallenge().add(c);
+        }
+    }
 
     public void removeChallenge(Challenge c){
-        if(getChallenge().contains(c)) getChallenge().remove(c); }
+        if(getChallenge().contains(c)) getChallenge().remove(c);
+        c.setOwner(null);  }
 
     public Set<Challenge> getChallenge() {
-        return cc;
+        return challenge;
     }
 
     public void setChallenge(Set<Challenge> cc) {
-        this.cc = cc;
+        this.challenge = cc;
     }
+
 
     //classe association  ==> one to many unidirectionnelle entre note et client
 
-    public void addNote(Note n){
+    /*public void addNote(Note n){
         if( !getNote().contains(n) ) getNote().add(n);
     }
 
@@ -58,11 +67,11 @@ public class Client extends User {
     }
 
     public Set<Note> getNote(){ return note; }
-    public void setNote(Set<Note> note){ this.note = note; }
+    public void setNote(Set<Note> note){ this.note = note; }*/
 
     //classe association  ==> one to many unidirectionnelle entre commentaire et client
 
-    public void addComment(Comment c){
+   /* public void addComment(Comment c){
         if( !getComment().contains(c) ) getComment().add(c);
     }
 
@@ -71,7 +80,7 @@ public class Client extends User {
     }
 
     public Set<Comment> getComment(){ return comment; }
-    public void setComment(Set<Comment> c){ this.comment = c; }
+    public void setComment(Set<Comment> c){ this.comment = c; }*/
 
 
 
@@ -99,5 +108,19 @@ public class Client extends User {
     public void setAndroid_version(String android_version) {
         this.android_version = android_version;
     }
+@Override
+    public int hashCode() {
+        int result=3;
+        result = 29 * result + getId_user();
+        return result;
+    }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Client)) return false;
+        Client client = (Client) o;
+        return Objects.equals(getPhone_number(), client.getPhone_number()) &&
+                Objects.equals(getAndroid_version(), client.getAndroid_version());
+    }
 }

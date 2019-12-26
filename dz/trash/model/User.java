@@ -25,6 +25,9 @@ public class User {
 
     }
 
+
+
+
 //****************************************************************************************************
     public int getId_user() {
         return id_user;
@@ -73,4 +76,5 @@ public class User {
     public void setBirthdate(Data birthdate) {
         this.birthdate = birthdate;
     }
+
 }
